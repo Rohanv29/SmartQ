@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <title>Dashboard | SmartQueue</title>
+
+    <link rel="stylesheet" href="/css/index.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #070d18;
+            color: #f8fafc;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .dashboard-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: #0a1220;
+            border-right: 1px solid #1c293c;
+            padding: 25px 18px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 10px;
+            margin-bottom: 45px;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            color: #3b82f6;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .brand-name span {
+            color: #3b82f6;
+        }
+
+        .nav-title {
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .side-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .side-nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            transition: .2s;
+            font-size: 14px;
+        }
+
+        .side-nav a:hover,
+        .side-nav a.active {
+            color: white;
+            background: linear-gradient(
+                90deg,
+                rgba(59,130,246,.25),
+                rgba(59,130,246,.08)
+            );
+        }
+
+        .side-nav a.active {
+            border-left: 3px solid #3b82f6;
+        }
+
+        .side-nav i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            bottom: 25px;
+            left: 18px;
+            right: 18px;
+        }
+
+        .support-box {
+            background: #101b2c;
+            border: 1px solid #24334a;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .support-box h4 {
+            margin: 0 0 5px;
+            font-size: 13px;
+        }
+
+        .support-box p {
+            margin: 0;
+            color: #71829d;
+            font-size: 11px;
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+            border-bottom: 1px solid #1c293c;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            background: rgba(7,13,24,.85);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .search-box {
+            width: 510px;
+            height: 43px;
+            border: 1px solid #263750;
+            border-radius: 9px;
+            background: #0d1727;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 10px;
+        }
+
+        .search-box i {
+            color: #64748b;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: white;
+            width: 100%;
+            font-size: 13px;
+        }
+
+        .search-box input::placeholder {
+            color: #64748b;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .notification {
+            position: relative;
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .notification-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ef4444;
+            border-radius: 50%;
+            right: -2px;
+            top: -1px;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 1px solid #253247;
+            padding-left: 20px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#6366f1,#8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info strong {
+            font-size: 13px;
+        }
+
+        .user-info span {
+            color: #71829d;
+            font-size: 11px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            padding: 35px;
+            max-width: 1600px;
+            margin: auto;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+        }
+
+        .heading-left h1 {
+            font-size: 34px;
+            margin: 0 0 7px;
+            letter-spacing: -1px;
+        }
+
+        .heading-left p {
+            margin: 0;
+            color: #71829d;
+            font-size: 14px;
+        }
+
+        .date-box {
+            color: #94a3b8;
+            font-size: 13px;
+            border: 1px solid #263750;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: #0d1727;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: #0c1626;
+            border: 1px solid #203047;
+            border-radius: 13px;
+            padding: 21px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(59,130,246,.08);
+            right: -25px;
+            top: -25px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            color: #8da0bd;
+            font-size: 12px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59,130,246,.15);
+            color: #3b82f6;
+        }
+
+        .stat-number {
+            font-size: 29px;
+            font-weight: 800;
+            margin-top: 14px;
+        }
+
+        .stat-change {
+            font-size: 11px;
+            margin-top: 7px;
+            color: #22c55e;
+        }
+
+        /* ================= PANELS ================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            background: #0b1524;
+            border: 1px solid #1e2d43;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h3 {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .panel-header span {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        /* ================= QUEUE ================= */
+
+        .queue-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .queue-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 90px 90px;
+            align-items: center;
+            background: #111c2e;
+            border: 1px solid #1d2b40;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 12px;
+        }
+
+        .token {
+            font-weight: 700;
+            color: white;
+        }
+
+        .service {
+            color: #8da0bd;
+        }
+
+        .wait-time {
+            color: #94a3b8;
+        }
+
+        .status {
+            background: rgba(234,179,8,.15);
+            color: #facc15;
+            border-radius: 20px;
+            padding: 5px 10px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        /* ================= COUNTERS ================= */
+
+        .counter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .counter {
+            background: #111c2e;
+            border: 1px solid #1d2b40;
+            border-radius: 9px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .counter-left strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .counter-left span {
+            display: block;
+            color: #64748b;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .counter-token {
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .serving {
+            background: rgba(16,185,129,.15);
+            color: #34d399;
+            font-size: 9px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+        }
+
+        /* ================= CHART ================= */
+
+        .chart-panel {
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            height: 180px;
+            position: relative;
+        }
+
+        #sim-chart-canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ================= RIGHT CONTROL ================= */
+
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-panel h3 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .control-panel > p {
+            color: #71829d;
+            font-size: 12px;
+            margin: 7px 0 25px;
+        }
+
+        .control-label {
+            color: #94a3b8;
+            font-size: 11px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        #sim-service {
+            width: 100%;
+            padding: 12px;
+            background: #111c2e;
+            border: 1px solid #263750;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        .control-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .control-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            transition: .2s;
+            font-size: 12px;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .primary-btn {
+            background: #3b82f6;
+        }
+
+        .secondary-btn {
+            background: #1b293b;
+        }
+
+        .danger-btn {
+            background: #351d25;
+            color: #fca5a5;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width:1000px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main-content {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                width: 350px;
+            }
+        }
+
+        @media(max-width:700px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .page {
+                padding: 22px 15px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .queue-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .date-box {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="dashboard-wrapper">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <a href="/dashboard" class="brand" style="text-decoration:none;color:white;">
+
+            <svg
+                viewBox="0 0 24 24"
+                class="brand-icon"
+                fill="currentColor"
+            >
+                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,6V12.4L15.5,15.1L16.25,13.8L12.5,11.6V6H11Z"/>
+            </svg>
+
+            <div class="brand-name">
+                Smart<span>Queue</span>
+            </div>
+
+        </a>
+
+
+        <div class="nav-title">
+            Main Menu
+        </div>
+
+
+        <nav class="side-nav">
+
+            <a href="/dashboard" class="active">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="/queue-management">
+                <i class="fa-solid fa-layer-group"></i>
+                Queue
+            </a>
+
+            <a href="/analytics">
+                <i class="fa-solid fa-chart-line"></i>
+                Analytics
+            </a>
+
+            <a href="/profile">
+                <i class="fa-solid fa-user"></i>
+                Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="support-box">
+
+                <h4>
+                    <i class="fa-solid fa-headset"></i>
+                    Need Help?
+                </h4>
+
+                <p>
+                    Contact SmartQueue support
+                </p>
+
+            </div>
+
+
+            <a href="/logout" class="logout-link">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search tokens, services..."
+                >
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <div class="notification">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="notification-dot"></span>
+
+                </div>
+
+
+                <div class="user-area">
+
+                    <div class="avatar">
+                        <%= user.fullname.charAt(0).toUpperCase() %>
+                    </div>
+
+                    <div class="user-info">
+
+                        <strong>
+                            Welcome, <%= user.fullname %>
+                        </strong>
+
+                        <span>
+                            Admin
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= PAGE ================= -->
+
+        <section class="page">
+
+
+            <div class="page-heading">
+
+                <div class="heading-left">
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    <p>
+                        Here's what's happening with your queues today.
+                    </p>
+
+                </div>
+
+
+                <div class="date-box">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    &nbsp;
+
+                    Queue Management
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= STATS ================= -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            In Queue
+                        </span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="sim-metric-active"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-change">
+                        Live customers waiting
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Avg Wait Time
+                        </span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="sim-metric-wait"
+                    >
+                        0m
+                    </div>
+
+                    <div class="stat-change">
+                        Real-time estimate
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Counters Active
+                        </span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-desktop"></i>
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="sim-metric-counters"
+                    >
+                        0/4
+                    </div>
+
+                    <div class="stat-change">
+                        Service counters
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Staff Efficiency
+                        </span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="sim-metric-staff"
+                    >
+                        0%
+                    </div>
+
+                    <div class="stat-change">
+                        Current performance
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= MAIN GRID ================= -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- LEFT -->
+
+                <div>
+
+
+                    <!-- WAITING QUEUE -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <h3>
+                                <i class="fa-solid fa-users"></i>
+                                &nbsp;
+                                Waiting Queue
+                            </h3>
+
+                            <span>
+                                <i class="fa-solid fa-circle"
+                                   style="color:#22c55e;font-size:7px;">
+                                </i>
+                                Live Queue
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="queue-list"
+                            id="sim-queue-list"
+                        >
+
+                            <!-- Injected dynamically by JS -->
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- COUNTERS -->
+
+                    <div
+                        class="panel"
+                        style="margin-top:20px;"
+                    >
+
+                        <div class="panel-header">
+
+                            <h3>
+                                <i class="fa-solid fa-desktop"></i>
+                                &nbsp;
+                                Service Counters
+                            </h3>
+
+                            <span>
+                                Status Panel
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="counter-list"
+                            id="sim-counters-list"
+                        >
+
+                            <!-- Injected dynamically by JS -->
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CHART -->
+
+                    <div class="panel chart-panel">
+
+                        <div class="panel-header">
+
+                            <h3>
+                                Customer Traffic Volume
+                            </h3>
+
+                            <span>
+                                Last 24 Hours
+                            </span>
+
+                        </div>
+
+
+                        <div class="chart-container">
+
+                            <canvas
+                                id="sim-chart-canvas"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RIGHT -->
+
+                <div class="panel control-panel">
+
+
+                    <h3>
+                        Queue Controls
+                    </h3>
+
+                    <p>
+                        Generate and serve queue tokens.
+                    </p>
+
+
+                    <label
+                        class="control-label"
+                        for="sim-service"
+                    >
+                        QUEUE CATEGORY
+                    </label>
+
+
+                    <select id="sim-service">
+
+                        <option value="General">
+                            General
+                        </option>
+
+                        <option value="VIP">
+                            VIP
+                        </option>
+
+                        <option value="Billing">
+                            Billing
+                        </option>
+
+                        <option value="Support">
+                            Support
+                        </option>
+
+                    </select>
+
+
+
+                    <div class="control-buttons">
+
+
+                        <button
+                            class="control-btn primary-btn"
+                            id="sim-btn-generate"
+                        >
+
+                            <i class="fa-solid fa-ticket"></i>
+
+                            &nbsp;
+
+                            Generate Ticket
+
+                        </button>
+
+
+
+                        <button
+                            class="control-btn secondary-btn"
+                            id="sim-btn-serve"
+                        >
+
+                            <i class="fa-solid fa-user-check"></i>
+
+                            &nbsp;
+
+                            Serve Next
+
+                        </button>
+
+
+
+                        <button
+                            class="control-btn secondary-btn"
+                            id="sim-btn-complete"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                            &nbsp;
+
+                            Complete Service
+
+                        </button>
+
+
+
+                        <button
+                            class="control-btn danger-btn"
+                            id="sim-btn-reset"
+                        >
+
+                            <i class="fa-solid fa-trash"></i>
+
+                            &nbsp;
+
+                            Reset Queue
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="qrContainer"
+                        style="margin-top:20px;text-align:center;"
+                    ></div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- ================= EXISTING LOGIC ================= -->
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+    const socket = io();
+
+    socket.on("connect", () => {
+        console.log("Socket Connected");
+    });
+
+</script>
+
+<script src="/js/index.js"></script>
+
+</body>
+
+</html>

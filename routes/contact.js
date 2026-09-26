@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
     // 2. Send via Resend
     const response = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "av6821246@gmail.com",
+      to: "process.env.admin_email",
       subject: `New Message Received Doctor : ${subject}`,
       html: `
         <div style="font-family:Arial,sans-serif;padding:20px">
